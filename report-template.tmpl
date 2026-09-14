@@ -25,7 +25,7 @@
     <tr>
       <td><b>{{.Vulnerability.ID}}</b></td>
       <td>
-        {{- range .Vulnerability.RelatedVulnerabilities -}}
+        {{- range .Vulnerability.Related -}}
           {{.ID}}
         {{- else -}}
           N/A
