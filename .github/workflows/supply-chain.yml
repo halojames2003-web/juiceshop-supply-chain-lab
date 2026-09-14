@@ -25,13 +25,13 @@ jobs:
       - name: Install Dependencies
         run: npm install --legacy-peer-deps --ignore-scripts
 
-      # 2. Install Syft and Grype CLIs directly (bypasses GitHub Action wrapper bugs)
+      # 2. Install Syft and Grype CLIs directly
       - name: Install Syft and Grype CLIs
         run: |
           curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin
           curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b /usr/local/bin
 
-      # 3. Force Syft to scan node_modules directly without ignoring gitignored folders
+      # 3. Force Syft to scan node_modules directly
       - name: Generate Full SBOM
         run: syft dir:./node_modules --exclude "" -o spdx-json=juiceshop.sbom.json
 
@@ -54,3 +54,14 @@ jobs:
         with:
           sarif_file: results.sarif
           category: "grype-sbom"
+
+      # 7. Generate HTML report from template
+      - name: Generate HTML Vulnerability Report
+        run: grype sbom:juiceshop.sbom.json -o template -t report-template.tmpl > vulnerability-report.html
+
+      # 8. Upload HTML report as artifact
+      - name: Upload HTML Report Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: grype-html-report
+          path: vulnerability-report.html
