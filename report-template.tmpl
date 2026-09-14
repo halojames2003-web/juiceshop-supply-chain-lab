@@ -15,7 +15,6 @@
   <table>
     <tr>
       <th>CVE ID</th>
-      <th>GHSA / Original ID</th>
       <th>Severity</th>
       <th>Package</th>
       <th>Installed Version</th>
@@ -24,13 +23,6 @@
     {{- range .Matches}}
     <tr>
       <td><b>{{.Vulnerability.ID}}</b></td>
-      <td>
-        {{- range .Vulnerability.Related -}}
-          {{.ID}}
-        {{- else -}}
-          N/A
-        {{- end -}}
-      </td>
       <td><span class="{{.Vulnerability.Severity}}">{{.Vulnerability.Severity}}</span></td>
       <td>{{.Artifact.Name}}</td>
       <td>{{.Artifact.Version}}</td>
